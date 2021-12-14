@@ -3,8 +3,8 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
-import Addcustomer from './Addcustomer'
-import Editcustomer from './Editcustomer'
+import Addcustomer from './Addcustomer';
+import Editcustomer from './Editcustomer';
 
 
 export default function Customers() {
@@ -24,25 +24,42 @@ export default function Customers() {
         .then(res => fetchData())
         .catch(err => console.error(err))
     }
-    const saveCustomer = (car) => {
+    const addCustomer = (customer) => {
         fetch('https://customerrest.herokuapp.com/api/customers', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(car)
+            body: {
+                firstname: "JOhn",
+                lastname: "Smith",
+                email: "j.@smith.com",
+                phone: "343-2332345",
+                streetaddress: "Yellow Street 23",
+                postcode: "344342",
+                city: "Yellowstone"
+
+            }
         })
         .then(res => fetchData())
         .catch(err => console.error(err))
 
     }
-    const updateCar = (car, link) => {
+    const updateCustomer = (customer, link) => {
         fetch(link, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(car)
+            body: {
+                firstname: "JOhn",
+                lastname: "Smith",
+                email: "j.@smith.com",
+                phone: "343-2332345",
+                streetaddress: "Yellow Street 23",
+                postcode: "344342",
+                city: "Yellowstone"
+            }
         })
         .then(res => fetchData())
         .catch(err => console.error(err))
@@ -61,20 +78,20 @@ export default function Customers() {
             filterable: false,
             sortable: false,
             width: 100,
-            Cell: row => <Editcustomer updateCar={updateCar} customer={row.original} />
+            Cell: row => <Editcustomer updateCustomer={updateCustomer} customer={row} />
           },
           {
               filterable: false,
               sortable: false,
               width: 100,
-              accessor: '_links.self.href',
-              Cell: row => <Button size="small" color="secondary"onClick={() => deleteCar(row.value)}>Delete</Button>
+              accessor: 'links.rel.href',
+              Cell: row => <Button size="small" color="secondary"onClick={() => deleteCustomer(row.value)}>Delete</Button>
           }
     ]
 
     return(
         <div>
-            <Addcustomer saveCustomer={saveCustomer}/>
+            <Addcustomer addCustomer={addCustomer}/>
             
             <ReactTable filterable={true} data={customers} columns={columns} />
 

@@ -7,13 +7,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 
-export default function Addcustomer(props) {
+export default function Editcustomer(props) {
   const [open, setOpen] = React.useState(false);
   const [customer, setCustomer] = React.useState({
       firstname: '', lastname: '', streetaddress: '', postcode: '', city: '', email: '', phone: ''
   })
 
   const handleClickOpen = () => {
+    console.log(props.customer);
+    setCustomer({firstname: props.customer.firstname, lastname: props.customer.lastname,
+      streetaddress: props.customer.streetaddress, postcode: props.customer.postcode,
+      city: props.customer.city, email: props.customer.email, phone: props.customer.phone})
     setOpen(true);
   };
 
@@ -24,18 +28,18 @@ export default function Addcustomer(props) {
       setCustomer({...customer, [event.target.name]: event.target.value})
 
   }
-  const addCustomer = () => {
-      props.addCustomer(customer);
+  const updateCustomer = () => {
+      props.updateCustomer(customer, props.original.links[0].href);
       handleClose();
   }
 
     return(
       <div>
-      <Button style={{margin: 10}} variant="outlined" onClick={handleClickOpen}>
-          Add customer
+      <Button color="primary" onClick={handleClickOpen}>
+          Edit
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New customer</DialogTitle>
+        <DialogTitle>Edit customer</DialogTitle>
           <DialogContent>
             <TextField
               autoFocus
@@ -96,8 +100,8 @@ export default function Addcustomer(props) {
             />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Delete</Button>
-          <Button onClick={addCustomer}>Add</Button>
+          <Button onClick={updateCustomer} color={"primary"}>Update</Button>
+          <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>
         </Dialog>
 
